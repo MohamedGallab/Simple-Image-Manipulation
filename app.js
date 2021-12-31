@@ -79,7 +79,6 @@ function showTransformForm() {
 		document.getElementById("decreaseContrastInputs").style.display = "none";
 		document.getElementById("inverseInputs").style.display = "initial";
 	}
-
 	// Listener to the event of submiting forms
 	increaseBrightnessForm.addEventListener("submit", (e) => {
 		e.preventDefault();
@@ -106,131 +105,131 @@ function showTransformForm() {
 		e.preventDefault();
 		inverse();
 	});
+}
 
-	//Applies pixel-wise transformations to increase brightness
-	function increaseBrightness(ib) {
-		const img = document.getElementById("inputImage");
-		const canvas = document.getElementById("resultImage");
-		const ctx = canvas.getContext('2d');
+//Applies pixel-wise transformations to increase brightness
+function increaseBrightness(ib) {
+	const img = document.getElementById("inputImage");
+	const canvas = document.getElementById("resultImage");
+	const ctx = canvas.getContext('2d');
 
-		var transformedImage = [];
-		var val;
+	var transformedImage = [];
+	var val;
 
-		//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
-		let rgba = getRGBAValues(img, canvas, ctx);
+	//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+	let rgba = getRGBAValues(img, canvas, ctx);
 
-		for (i = 0; i < img.width * img.height * 4; i += 4) {
-			val = rgba[i] + ib;
-			if (val > 255) {
-				val = 255;
-			}
-			transformedImage.push(val, val, val, rgba[i + 3]);
+	for (i = 0; i < img.width * img.height * 4; i += 4) {
+		val = rgba[i] + ib;
+		if (val > 255) {
+			val = 255;
+		}
+		transformedImage.push(val, val, val, rgba[i + 3]);
+	}
+
+	displayResultImage(img, transformedImage, ctx);
+
+}
+
+//Applies pixel-wise transformations to decrease brightness
+function decreaseBrightness(db) {
+	const img = document.getElementById("inputImage");
+	const canvas = document.getElementById("resultImage");
+	const ctx = canvas.getContext('2d');
+
+	var transformedImage = [];
+	var val;
+
+	//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+	rgba = getRGBAValues(img, canvas, ctx);
+
+	for (i = 0; i < img.width * img.height * 4; i += 4) {
+		val = rgba[i] - db;
+		if (val < 0) {
+			val = 0;
+		}
+		transformedImage.push(val, val, val, rgba[i + 3]);
+	}
+
+	displayResultImage(img, transformedImage, ctx);
+}
+
+//Applies pixel-wise transformations to increase contrast
+function increaseContrast(obd, odb, tbd, tdb) {
+	const img = document.getElementById("inputImage");
+	const canvas = document.getElementById("resultImage");
+	const ctx = canvas.getContext('2d');
+
+	var transformedImage = [];
+	var val;
+
+	//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+	rgba = getRGBAValues(img, canvas, ctx);
+
+	for (i = 0; i < img.width * img.height * 4; i += 4) {
+
+		if (rgba[i] <= obd) {
+			// If the pixel in the dark area.
+			let darkSlope = tbd / obd;
+			val = darkSlope * rgba[i];
+		} else if (rgba[i] <= odb) {
+			// If the pixel in the middle area.
+			let middleSlope = (tdb - tbd) / (odb - obd);
+			val = middleSlope * rgba[i] + obd;
+		} else {
+			// If the pixel in the light area.
+			let brightSlope = (255 - tdb) / (255 - odb);
+			let c = 255 - brightSlope * 255;
+			val = brightSlope * rgba[i] + c;
 		}
 
-		displayResultImage(img, transformedImage, ctx);
-
+		transformedImage.push(val, val, val, rgba[i + 3]);
 	}
 
-	//Applies pixel-wise transformations to decrease brightness
-	function decreaseBrightness(db) {
-		const img = document.getElementById("inputImage");
-		const canvas = document.getElementById("resultImage");
-		const ctx = canvas.getContext('2d');
+	displayResultImage(img, transformedImage, ctx);
 
-		var transformedImage = [];
-		var val;
+}
 
-		//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
-		rgba = getRGBAValues(img, canvas, ctx);
+//Applies pixel-wise transformations to inverse image
+function inverse() {
+	const img = document.getElementById("inputImage");
+	const canvas = document.getElementById("resultImage");
+	const ctx = canvas.getContext('2d');
 
-		for (i = 0; i < img.width * img.height * 4; i += 4) {
-			val = rgba[i] - db;
-			if (val < 0) {
-				val = 0;
-			}
-			transformedImage.push(val, val, val, rgba[i + 3]);
-		}
+	let transformedImage = [];
+	let val;
 
-		displayResultImage(img, transformedImage, ctx);
+	//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+	let rgba = getRGBAValues(img, canvas, ctx);
+
+	for (i = 0; i < img.width * img.height * 4; i += 4) {
+		val = 255 - rgba[i];
+		transformedImage.push(val, val, val, rgba[i + 3]);
 	}
 
-	//Applies pixel-wise transformations to increase contrast
-	function increaseContrast(obd, odb, tbd, tdb) {
-		const img = document.getElementById("inputImage");
-		const canvas = document.getElementById("resultImage");
-		const ctx = canvas.getContext('2d');
+	displayResultImage(img, transformedImage, ctx);
+}
 
-		var transformedImage = [];
-		var val;
+//Extracts rgba 1D array of all the pixels in the original image
+function getRGBAValues(img, canvas, ctx) {
+	canvas.width = img.width;
+	canvas.height = img.height;
 
-		//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
-		rgba = getRGBAValues(img, canvas, ctx);
+	ctx.drawImage(img, 0, 0);
 
-		for (i = 0; i < img.width * img.height * 4; i += 4) {
+	var rgba = ctx.getImageData(
+		0, 0, img.width, img.height
+	).data;
+	return rgba;
+}
 
-			if (rgba[i] <= obd) {
-				// If the pixel in the dark area.
-				let darkSlope = tbd / obd;
-				val = darkSlope * rgba[i];
-			} else if (rgba[i] <= odb) {
-				// If the pixel in the middle area.
-				let middleSlope = (tdb - tbd) / (odb - obd);
-				val = middleSlope * rgba[i] + obd;
-			} else {
-				// If the pixel in the light area.
-				let brightSlope = (255 - tdb) / (255 - odb);
-				let c = 255 - brightSlope * 255;
-				val = brightSlope * rgba[i] + c;
-			}
-
-			transformedImage.push(val, val, val, rgba[i + 3]);
-		}
-
-		displayResultImage(img, transformedImage, ctx);
-
-	}
-
-	//Applies pixel-wise transformations to inverse image
-	function inverse() {
-		const img = document.getElementById("inputImage");
-		const canvas = document.getElementById("resultImage");
-		const ctx = canvas.getContext('2d');
-
-		let transformedImage = [];
-		let val;
-
-		//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
-		let rgba = getRGBAValues(img, canvas, ctx);
-
-		for (i = 0; i < img.width * img.height * 4; i += 4) {
-			val = 255 - rgba[i];
-			transformedImage.push(val, val, val, rgba[i + 3]);
-		}
-
-		displayResultImage(img, transformedImage, ctx);
-	}
-
-	//Extracts rgba 1D array of all the pixels in the original image
-	function getRGBAValues(img, canvas, ctx) {
-		canvas.width = img.width;
-		canvas.height = img.height;
-
-		ctx.drawImage(img, 0, 0);
-
-		var rgba = ctx.getImageData(
-			0, 0, img.width, img.height
-		).data;
-		return rgba;
-	}
-
-	//Displays the transformed image
-	function displayResultImage(img, transformedImage, ctx) {
-		//Get a pointer to the current location in the image.
-		var palette = ctx.getImageData(0, 0, img.width, img.height); //x,y,w,h
-		//Wrap your array as a Uint8ClampedArray
-		palette.data.set(new Uint8ClampedArray(transformedImage)); // assuming values 0..255, RGBA, pre-mult.
-		//Repost the data.
-		ctx.putImageData(palette, 0, 0);
-		document.getElementById("result").style.display = "initial";
-	}
-}  
+//Displays the transformed image
+function displayResultImage(img, transformedImage, ctx) {
+	//Get a pointer to the current location in the image.
+	var palette = ctx.getImageData(0, 0, img.width, img.height); //x,y,w,h
+	//Wrap your array as a Uint8ClampedArray
+	palette.data.set(new Uint8ClampedArray(transformedImage)); // assuming values 0..255, RGBA, pre-mult.
+	//Repost the data.
+	ctx.putImageData(palette, 0, 0);
+	document.getElementById("result").style.display = "initial";
+}
