@@ -139,7 +139,39 @@ function showTransformForm() {
     displayResultImage(img, transformedImage, ctx);
   }
 
+  function increaseContrast(obd, odb, tbd, tdb) {
+    const img = document.getElementById("inputImage");
+    const canvas = document.getElementById("resultImage");
+    const ctx = canvas.getContext('2d');
 
+    var transformedImage = [];
+    var val;
+
+    //Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+    rgba = getRGBAValues(img, canvas, ctx);
+
+    for (i = 0; i < img.width * img.height * 4; i += 4) {
+      if (rgba[i] <= obd)
+      {
+        let darkSlope = tbd / obd;
+        val = darkSlope * rgba[i];
+      } else if (rbga[i] <= odb)
+      {
+        let middleSlope = (tdb - tbd) / (odb - obd);
+        val = middleSlope * rbga[i] + obd;
+      } else
+      {
+        let brightSlope = (255 - tdb) / (255 - odb);
+        let c = 255 - brightSlope * 255;
+        val = brightSlope * rbga[i] + c;
+      }
+
+      transformedImage.push(val, val, val, rgba[i + 3]);
+    }
+
+    displayResultImage(img, transformedImage, ctx);
+
+  }
 
   //Extracts rgba 1D array of all the pixels in the original image
   function getRGBAValues(img, canvas, ctx) {
