@@ -79,33 +79,34 @@ function showTransformForm() {
 		document.getElementById("decreaseContrastInputs").style.display = "none";
 		document.getElementById("inverseInputs").style.display = "initial";
 	}
-	// Listener to the event of submiting forms
-	increaseBrightnessForm.addEventListener("submit", (e) => {
-		e.preventDefault();
-		var ib = document.getElementById("ib").value;
-		increaseBrightness(Number(ib));
-	});
-
-	decreaseBrightnessForm.addEventListener("submit", (e) => {
-		e.preventDefault();
-		var db = document.getElementById("db").value;
-		decreaseBrightness(Number(db));
-	});
-
-	increaseContrastForm.addEventListener("submit", (e) => {
-		e.preventDefault()
-		var obdInput = document.getElementById("obd").value;
-		var odbInput = document.getElementById("odb").value;
-		var tbdInput = document.getElementById("tbd").value;
-		var tdbInput = document.getElementById("tdb").value;
-		increaseContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
-	});
-
-	inverseForm.addEventListener("submit", (e) => {
-		e.preventDefault();
-		inverse();
-	});
 }
+
+// Listener to the event of submiting forms
+document.getElementById("increaseBrightnessForm").addEventListener("submit", (e) => {
+	e.preventDefault();
+	var ib = document.getElementById("ib").value;
+	increaseBrightness(Number(ib));
+});
+
+document.getElementById("decreaseBrightnessForm").addEventListener("submit", (e) => {
+	e.preventDefault();
+	var db = document.getElementById("db").value;
+	decreaseBrightness(Number(db));
+});
+
+document.getElementById("increaseContrastForm").addEventListener("submit", (e) => {
+	e.preventDefault()
+	var obdInput = document.getElementById("obd").value;
+	var odbInput = document.getElementById("odb").value;
+	var tbdInput = document.getElementById("tbd").value;
+	var tdbInput = document.getElementById("tdb").value;
+	increaseContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
+});
+
+document.getElementById("inverseForm").addEventListener("submit", (e) => {
+	e.preventDefault();
+	inverse();
+});
 
 //Applies pixel-wise transformations to increase brightness
 function increaseBrightness(ib) {
