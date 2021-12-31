@@ -152,6 +152,7 @@ function showTransformForm() {
   }
   //Applies pixel-wise transformations to increase contrast
   function increaseContrast(obd, odb, tbd, tdb) {
+    console.log('hey');
     const img = document.getElementById("inputImage");
     const canvas = document.getElementById("resultImage");
     const ctx = canvas.getContext('2d');
@@ -169,17 +170,17 @@ function showTransformForm() {
         // If the pixel in the dark area.
         let darkSlope = tbd / obd;
         val = darkSlope * rgba[i];
-      } else if (rbga[i] <= odb)
+      } else if (rgba[i] <= odb)
       {
         // If the pixel in the middle area.
         let middleSlope = (tdb - tbd) / (odb - obd);
-        val = middleSlope * rbga[i] + obd;
+        val = middleSlope * rgba[i] + obd;
       } else
       {
         // If the pixel in the light area.
         let brightSlope = (255 - tdb) / (255 - odb);
         let c = 255 - brightSlope * 255;
-        val = brightSlope * rbga[i] + c;
+        val = brightSlope * rgba[i] + c;
       }
 
       transformedImage.push(val, val, val, rgba[i + 3]);
