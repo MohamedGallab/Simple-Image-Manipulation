@@ -29,6 +29,7 @@ function checkFileName(fileName) {
 function showTransformForm() {
 	const increaseBrightnessForm = document.getElementById("increaseBrightnessForm");
 	const decreaseBrightnessForm = document.getElementById("decreaseBrightnessForm");
+	const increaseContrastForm = document.getElementById("increaseContrastForm");
 
 
 	const inverseForm = document.getElementById("inverseForm");
@@ -92,6 +93,15 @@ function showTransformForm() {
 		decreaseBrightness(Number(db));
 	});
 
+	increaseContrastForm.addEventListener("submit", (e) => {
+		e.preventDefault()
+		var obdInput = document.getElementById("obd").value;
+		var odbInput = document.getElementById("odb").value;
+		var tbdInput = document.getElementById("tbd").value;
+		var tdbInput = document.getElementById("tdb").value;
+		increaseContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
+	});
+
 	inverseForm.addEventListener("submit", (e) => {
 		e.preventDefault();
 		inverse();
@@ -144,6 +154,41 @@ function showTransformForm() {
 		displayResultImage(img, transformedImage, ctx);
 	}
 
+	//Applies pixel-wise transformations to increase contrast
+	function increaseContrast(obd, odb, tbd, tdb) {
+		const img = document.getElementById("inputImage");
+		const canvas = document.getElementById("resultImage");
+		const ctx = canvas.getContext('2d');
+
+		var transformedImage = [];
+		var val;
+
+		//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+		rgba = getRGBAValues(img, canvas, ctx);
+
+		for (i = 0; i < img.width * img.height * 4; i += 4) {
+
+			if (rgba[i] <= obd) {
+				// If the pixel in the dark area.
+				let darkSlope = tbd / obd;
+				val = darkSlope * rgba[i];
+			} else if (rbga[i] <= odb) {
+				// If the pixel in the middle area.
+				let middleSlope = (tdb - tbd) / (odb - obd);
+				val = middleSlope * rbga[i] + obd;
+			} else {
+				// If the pixel in the light area.
+				let brightSlope = (255 - tdb) / (255 - odb);
+				let c = 255 - brightSlope * 255;
+				val = brightSlope * rbga[i] + c;
+			}
+
+			transformedImage.push(val, val, val, rgba[i + 3]);
+		}
+
+		displayResultImage(img, transformedImage, ctx);
+
+	}
 
 	//Applies pixel-wise transformations to inverse image
 	function inverse() {
