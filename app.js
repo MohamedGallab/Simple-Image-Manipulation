@@ -29,6 +29,7 @@ function checkFileName(fileName) {
 function showTransformForm() {
   const increaseBrightnessForm = document.getElementById("increaseBrightnessForm");
   const decreaseBrightnessForm = document.getElementById("decreaseBrightnessForm");
+  const increaseContrastForm = document.getElementById("increaseContrastForm");
   //Write your code here for the other forms
 
   const mylist = document.getElementById("myList");
@@ -85,10 +86,20 @@ function showTransformForm() {
 
   //Write your code here for EventListeners for the other forms using the constants you will create in the transform function
 
+  // Listener to the event of submiting the decrease brightness form
   decreaseBrightnessForm.addEventListener("submit", (e) => {
     e.preventDefault()
     var db = document.getElementById("db").value
     decreaseBrightness(Number(db))
+  });
+
+  increaseContrastForm.addEventListener("submit", (e) => {
+    e.preventDefault()
+    var obdInput = document.getElementById("obd").value;
+    var odbInput = document.getElementById("odb").value;
+    var tbdInput = document.getElementById("tbd").value;
+    var tdbInput = document.getElementById("tdb").value;
+    increaseContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
   });
 
   //Applies pixel-wise transformations to increase brightness
@@ -117,6 +128,7 @@ function showTransformForm() {
 
   //Write your code here for three more functions for the other transformations
 
+  //Applies pixel-wise transformations to decrease brightness
   function decreaseBrightness(db) {
     const img = document.getElementById("inputImage");
     const canvas = document.getElementById("resultImage");
@@ -138,7 +150,7 @@ function showTransformForm() {
 
     displayResultImage(img, transformedImage, ctx);
   }
-
+  //Applies pixel-wise transformations to increase contrast
   function increaseContrast(obd, odb, tbd, tdb) {
     const img = document.getElementById("inputImage");
     const canvas = document.getElementById("resultImage");
@@ -151,16 +163,20 @@ function showTransformForm() {
     rgba = getRGBAValues(img, canvas, ctx);
 
     for (i = 0; i < img.width * img.height * 4; i += 4) {
+      
       if (rgba[i] <= obd)
       {
+        // If the pixel in the dark area.
         let darkSlope = tbd / obd;
         val = darkSlope * rgba[i];
       } else if (rbga[i] <= odb)
       {
+        // If the pixel in the middle area.
         let middleSlope = (tdb - tbd) / (odb - obd);
         val = middleSlope * rbga[i] + obd;
       } else
       {
+        // If the pixel in the light area.
         let brightSlope = (255 - tdb) / (255 - odb);
         let c = 255 - brightSlope * 255;
         val = brightSlope * rbga[i] + c;
