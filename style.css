@@ -10,3 +10,26 @@
     clear: both;
     display: table;
   }
+
+  .OurInfo
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  h2
+  {
+    margin: 1rem;
+  }
+  
+  .names
+  {
+    color: rgb(18, 18, 122);
+  }
+  
+  .tuts
+  {
+    color: grey;  
+  }
+  
