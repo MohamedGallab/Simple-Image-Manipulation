@@ -1,35 +1,37 @@
+body{
+  background-color: rgb(15, 15, 15);
+  color: gainsboro;
+}
 
+.column {
+  float: left;
+  padding: 5px;
+}
 
-  .column {
-    float: left;
-    padding: 5px;
-  }
-  
-  .row::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
 
-  .OurInfo
-  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  h2
-  {
-    margin: 1rem;
-  }
-  
-  .names
-  {
-    color: rgb(18, 18, 122);
-  }
-  
-  .tuts
-  {
-    color: grey;  
-  }
-  
+.OurInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  margin: 1rem;
+}
+
+.names {
+  color: crimson;
+}
+
+.ids {
+  color: salmon;
+}
+
+.tuts {
+  color: mediumorchid;
+}

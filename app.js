@@ -34,10 +34,10 @@ function showTransformForm() {
   const mylist = document.getElementById("myList");
 
   //Storing the type chosen in a variable
-  transformType = mylist.options[mylist.selectedIndex].text;
+  let transformType = mylist.options[mylist.selectedIndex].text;
 
   //Displaying to the user the type he chose by changing the text element of id= transformType to the selected type
-  document.getElementById("transformType").value = mylist.options[mylist.selectedIndex].text;
+  document.getElementById("transformType").innerHTML = mylist.options[mylist.selectedIndex].text;
 
   if (transformType == "Increase Brightness") {
     document.getElementById("increaseBrightnessInputs").style.display = "initial";
@@ -78,9 +78,9 @@ function showTransformForm() {
 
   // Listener to the event of submiting the increase brightness form
   increaseBrightnessForm.addEventListener("submit", (e) => {
-    e.preventDefault()
-    var ib = document.getElementById("ib").value
-    increaseBrightness(Number(ib))
+    e.preventDefault();
+    var ib = document.getElementById("ib").value;
+    increaseBrightness(Number(ib));
   });
   //Write your code here for EventListeners for the other forms using the constants you will create in the transform function
 
