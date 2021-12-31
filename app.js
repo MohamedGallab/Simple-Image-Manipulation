@@ -89,20 +89,20 @@ document.getElementById("decreaseBrightnessForm").addEventListener("submit", (e)
 
 document.getElementById("increaseContrastForm").addEventListener("submit", (e) => {
 	e.preventDefault()
-	var obdInput = document.getElementById("obd").value;
-	var odbInput = document.getElementById("odb").value;
-	var tbdInput = document.getElementById("tbd").value;
-	var tdbInput = document.getElementById("tdb").value;
-	changeContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
+	var originalBrightestDarkInput = document.getElementById("originalBrightestDark").value;
+	var originalDarkestBrightInput = document.getElementById("originalDarkestBright").value;
+	var transformedBrightestDarkInput = document.getElementById("transformedBrightestDark").value;
+	var transformedDarkestBrightInput = document.getElementById("transformedDarkestBright").value;
+	changeContrast(Number(originalBrightestDarkInput), Number(originalDarkestBrightInput), Number(transformedBrightestDarkInput), Number(transformedDarkestBrightInput));
 });
 
 document.getElementById("decreaseContrastForm").addEventListener("submit", (e) => {
 	e.preventDefault()
-	var obdInput = document.getElementById("obd").value;
-	var odbInput = document.getElementById("odb").value;
-	var tbdInput = document.getElementById("tbd").value;
-	var tdbInput = document.getElementById("tdb").value;
-	changeContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
+	var originalBrightestDarkInput = document.getElementById("originalBrightestDark").value;
+	var originalDarkestBrightInput = document.getElementById("originalDarkestBright").value;
+	var transformedBrightestDarkInput = document.getElementById("transformedBrightestDark").value;
+	var transformedDarkestBrightInput = document.getElementById("transformedDarkestBright").value;
+	changeContrast(Number(originalBrightestDarkInput), Number(originalDarkestBrightInput), Number(transformedBrightestDarkInput), Number(transformedDarkestBrightInput));
 });
 
 document.getElementById("inverseForm").addEventListener("submit", (e) => {
@@ -158,7 +158,7 @@ function decreaseBrightness(db) {
 }
 
 //Applies pixel-wise transformations to increase contrast
-function changeContrast(obd, odb, tbd, tdb) {
+function changeContrast(originalBrightestDark, originalDarkestBright, transformedBrightestDark, transformedDarkestBright) {
 	const img = document.getElementById("inputImage");
 	const canvas = document.getElementById("resultImage");
 	const ctx = canvas.getContext('2d');
@@ -171,21 +171,20 @@ function changeContrast(obd, odb, tbd, tdb) {
 
 	for (i = 0; i < img.width * img.height * 4; i += 4) {
 
-		if (rgba[i] <= obd) {
+		if (rgba[i] <= originalBrightestDark) {
 			// If the pixel in the dark area.
-			let darkSlope = tbd / obd;
+			let darkSlope = transformedBrightestDark / originalBrightestDark;
 			val = darkSlope * rgba[i];
-		} 
-		else if (rgba[i] <= odb) {
+		}
+		else if (rgba[i] <= originalDarkestBright) {
 			// If the pixel in the middle area.
-			let middleSlope = (tdb - tbd) / (odb - obd);
-			val = middleSlope * rgba[i] + obd;
-		} 
+			let middleSlope = (transformedDarkestBright - transformedBrightestDark) / (originalDarkestBright - originalBrightestDark);
+			val = middleSlope * (rgba[i] - originalBrightestDark) + transformedBrightestDark;
+		}
 		else {
 			// If the pixel in the light area.
-			let brightSlope = (255 - tdb) / (255 - odb);
-			let c = 255 - brightSlope * 255;
-			val = brightSlope * rgba[i] + c;
+			let brightSlope = (255 - transformedDarkestBright) / (255 - originalDarkestBright);
+			val = brightSlope * (rgba[i] - 255) + 255;
 		}
 
 		transformedImage.push(val, val, val, rgba[i + 3]);
