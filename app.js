@@ -44,15 +44,36 @@ function showTransformForm() {
     document.getElementById("decreaseBrightnessInputs").style.display = "none";
     document.getElementById("increaseContrastInputs").style.display = "none";
     document.getElementById("decreaseContrastInputs").style.display = "none";
+    document.getElementById("inverseInputs").style.display = "none";
 
   } else if (transformType == "Decrease Brightness") {
     //write your code here
-
+    document.getElementById("increaseBrightnessInputs").style.display = "none";
+    document.getElementById("decreaseBrightnessInputs").style.display = "initial";
+    document.getElementById("increaseContrastInputs").style.display = "none";
+    document.getElementById("decreaseContrastInputs").style.display = "none";
+    document.getElementById("inverseInputs").style.display = "none";
   } else if (transformType == "Increase Contrast") {
     //Write your code here
-
+    document.getElementById("increaseBrightnessInputs").style.display = "none";
+    document.getElementById("decreaseBrightnessInputs").style.display = "none";
+    document.getElementById("increaseContrastInputs").style.display = "initial";
+    document.getElementById("decreaseContrastInputs").style.display = "none";
+    document.getElementById("inverseInputs").style.display = "none";
+  } else if (transformType == "Decrease Contrast") {
+    //Write your code here
+    document.getElementById("increaseBrightnessInputs").style.display = "none";
+    document.getElementById("decreaseBrightnessInputs").style.display = "none";
+    document.getElementById("increaseContrastInputs").style.display = "none";
+    document.getElementById("decreaseContrastInputs").style.display = "initial";
+    document.getElementById("inverseInputs").style.display = "none";
   } else {
     //Write your code here
+    document.getElementById("increaseBrightnessInputs").style.display = "none";
+    document.getElementById("decreaseBrightnessInputs").style.display = "none";
+    document.getElementById("increaseContrastInputs").style.display = "none";
+    document.getElementById("decreaseContrastInputs").style.display = "none";
+    document.getElementById("inverseInputs").style.display = "initial";
   }
 
   // Listener to the event of submiting the increase brightness form
