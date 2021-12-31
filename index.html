@@ -94,7 +94,23 @@
 	</div>
 
 	<div id="decreaseContrastInputs" style="display: none;">
+		<form id="decreaseContrastForm" class="form">
+			<label>Original Brightest Dark: </label>
+			<input type="number" id="obd" placeholder="0" min="0" max="255"><br><br>
 
+			<label>Original Darkest Bright: </label>
+			<input type="number" id="odb" placeholder="0" min="0" max="255"><br><br>
+
+			<label>Transformed Brightest Dark: </label>
+			<input type="number" id="tbd" placeholder="0" min="0" max="255"><br><br>
+
+			<label>Transformed Darkest Bright: </label>
+			<input type="number" id="tdb" placeholder="0" min="0" max="255"><br><br>
+
+			<input type="submit" value="Apply">
+		</form>
+
+		<p>Click on the Apply button to submit the value.</p>
 	</div>
 	<div id="inverseInputs" style="display: none;">
 		<form id="inverseForm" class="form">

@@ -27,13 +27,6 @@ function checkFileName(fileName) {
 
 //Displays the corresponding form to the selected transformation and hides the other forms
 function showTransformForm() {
-	const increaseBrightnessForm = document.getElementById("increaseBrightnessForm");
-	const decreaseBrightnessForm = document.getElementById("decreaseBrightnessForm");
-	const increaseContrastForm = document.getElementById("increaseContrastForm");
-
-
-	const inverseForm = document.getElementById("inverseForm");
-	//Write your code here for the other forms
 
 	const mylist = document.getElementById("myList");
 
@@ -50,29 +43,29 @@ function showTransformForm() {
 		document.getElementById("decreaseContrastInputs").style.display = "none";
 		document.getElementById("inverseInputs").style.display = "none";
 
-	} else if (transformType == "Decrease Brightness") {
-		//write your code here
+	}
+	else if (transformType == "Decrease Brightness") {
 		document.getElementById("increaseBrightnessInputs").style.display = "none";
 		document.getElementById("decreaseBrightnessInputs").style.display = "initial";
 		document.getElementById("increaseContrastInputs").style.display = "none";
 		document.getElementById("decreaseContrastInputs").style.display = "none";
 		document.getElementById("inverseInputs").style.display = "none";
-	} else if (transformType == "Increase Contrast") {
-		//Write your code here
+	}
+	else if (transformType == "Increase Contrast") {
 		document.getElementById("increaseBrightnessInputs").style.display = "none";
 		document.getElementById("decreaseBrightnessInputs").style.display = "none";
 		document.getElementById("increaseContrastInputs").style.display = "initial";
 		document.getElementById("decreaseContrastInputs").style.display = "none";
 		document.getElementById("inverseInputs").style.display = "none";
-	} else if (transformType == "Decrease Contrast") {
-		//Write your code here
+	}
+	else if (transformType == "Decrease Contrast") {
 		document.getElementById("increaseBrightnessInputs").style.display = "none";
 		document.getElementById("decreaseBrightnessInputs").style.display = "none";
 		document.getElementById("increaseContrastInputs").style.display = "none";
 		document.getElementById("decreaseContrastInputs").style.display = "initial";
 		document.getElementById("inverseInputs").style.display = "none";
-	} else {
-		//Write your code here
+	}
+	else {
 		document.getElementById("increaseBrightnessInputs").style.display = "none";
 		document.getElementById("decreaseBrightnessInputs").style.display = "none";
 		document.getElementById("increaseContrastInputs").style.display = "none";
@@ -81,7 +74,7 @@ function showTransformForm() {
 	}
 }
 
-// Listener to the event of submiting forms
+// forms' Event Listeners
 document.getElementById("increaseBrightnessForm").addEventListener("submit", (e) => {
 	e.preventDefault();
 	var ib = document.getElementById("ib").value;
@@ -100,7 +93,16 @@ document.getElementById("increaseContrastForm").addEventListener("submit", (e) =
 	var odbInput = document.getElementById("odb").value;
 	var tbdInput = document.getElementById("tbd").value;
 	var tdbInput = document.getElementById("tdb").value;
-	increaseContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
+	changeContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
+});
+
+document.getElementById("decreaseContrastForm").addEventListener("submit", (e) => {
+	e.preventDefault()
+	var obdInput = document.getElementById("obd").value;
+	var odbInput = document.getElementById("odb").value;
+	var tbdInput = document.getElementById("tbd").value;
+	var tdbInput = document.getElementById("tdb").value;
+	changeContrast(Number(obdInput), Number(odbInput), Number(tbdInput), Number(tdbInput));
 });
 
 document.getElementById("inverseForm").addEventListener("submit", (e) => {
@@ -156,7 +158,7 @@ function decreaseBrightness(db) {
 }
 
 //Applies pixel-wise transformations to increase contrast
-function increaseContrast(obd, odb, tbd, tdb) {
+function changeContrast(obd, odb, tbd, tdb) {
 	const img = document.getElementById("inputImage");
 	const canvas = document.getElementById("resultImage");
 	const ctx = canvas.getContext('2d');
@@ -173,11 +175,13 @@ function increaseContrast(obd, odb, tbd, tdb) {
 			// If the pixel in the dark area.
 			let darkSlope = tbd / obd;
 			val = darkSlope * rgba[i];
-		} else if (rgba[i] <= odb) {
+		} 
+		else if (rgba[i] <= odb) {
 			// If the pixel in the middle area.
 			let middleSlope = (tdb - tbd) / (odb - obd);
 			val = middleSlope * rgba[i] + obd;
-		} else {
+		} 
+		else {
 			// If the pixel in the light area.
 			let brightSlope = (255 - tdb) / (255 - odb);
 			let c = 255 - brightSlope * 255;
