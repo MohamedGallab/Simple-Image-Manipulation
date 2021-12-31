@@ -89,10 +89,10 @@ document.getElementById("decreaseBrightnessForm").addEventListener("submit", (e)
 
 document.getElementById("increaseContrastForm").addEventListener("submit", (e) => {
 	e.preventDefault()
-	var originalBrightestDarkInput = document.getElementById("originalBrightestDark").value;
-	var originalDarkestBrightInput = document.getElementById("originalDarkestBright").value;
-	var transformedBrightestDarkInput = document.getElementById("transformedBrightestDark").value;
-	var transformedDarkestBrightInput = document.getElementById("transformedDarkestBright").value;
+	var originalBrightestDarkInput = document.getElementById("originalBrightestDarkIncreaseContrast").value;
+	var originalDarkestBrightInput = document.getElementById("originalDarkestBrightIncreaseContrast").value;
+	var transformedBrightestDarkInput = document.getElementById("transformedBrightestDarkIncreaseContrast").value;
+	var transformedDarkestBrightInput = document.getElementById("transformedDarkestBrightIncreaseContrast").value;
 	changeContrast(Number(originalBrightestDarkInput), Number(originalDarkestBrightInput), Number(transformedBrightestDarkInput), Number(transformedDarkestBrightInput));
 });
 
