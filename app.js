@@ -157,6 +157,30 @@ function decreaseBrightness(db) {
 	displayResultImage(img, transformedImage, ctx);
 }
 
+// decreasing brightness using the provided graph
+function decreaseBrightnessGraph(db) {
+	const img = document.getElementById("inputImage");
+	const canvas = document.getElementById("resultImage");
+	const ctx = canvas.getContext('2d');
+
+	var transformedImage = [];
+	var val;
+
+	let slope = (255 - 0) / (255 - db);
+	//Images are displayed in the RGBA format so a greyscale pixel could look like (25,25,25,255)
+	rgba = getRGBAValues(img, canvas, ctx);
+
+	for (i = 0; i < img.width * img.height * 4; i += 4) {
+		val = slope * (rgba[i] - db);
+		if (val < 0) {
+			val = 0;
+		}
+		transformedImage.push(val, val, val, rgba[i + 3]);
+	}
+
+	displayResultImage(img, transformedImage, ctx);
+}
+
 //Applies pixel-wise transformations to increase contrast
 function changeContrast(originalBrightestDark, originalDarkestBright, transformedBrightestDark, transformedDarkestBright) {
 	const img = document.getElementById("inputImage");
