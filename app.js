@@ -84,7 +84,7 @@ document.getElementById("increaseBrightnessForm").addEventListener("submit", (e)
 document.getElementById("decreaseBrightnessForm").addEventListener("submit", (e) => {
 	e.preventDefault();
 	var db = document.getElementById("db").value;
-	decreaseBrightness(Number(db));
+	decreaseBrightnessGraph(Number(db));
 });
 
 document.getElementById("increaseContrastForm").addEventListener("submit", (e) => {
@@ -134,6 +134,8 @@ function increaseBrightness(ib) {
 
 }
 
+// NOTE: this uses the same technique as the increase brightness but doesn't use a graph as instructed
+
 //Applies pixel-wise transformations to decrease brightness
 function decreaseBrightness(db) {
 	const img = document.getElementById("inputImage");
@@ -156,6 +158,8 @@ function decreaseBrightness(db) {
 
 	displayResultImage(img, transformedImage, ctx);
 }
+
+// NOTE: using a graph as instructed in the project description
 
 // decreasing brightness using the provided graph
 function decreaseBrightnessGraph(db) {
